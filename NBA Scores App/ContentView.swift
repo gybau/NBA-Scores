@@ -8,14 +8,42 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @EnvironmentObject var gameViewModel: GameViewModel
+    
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+            ForEach(gameViewModel.games) { game in
+                ZStack {
+                    Color.white
+                    HStack {
+                        Spacer()
+                        VStack {
+                            Text(game.homeTeamName)
+                            Text(String(game.homeTeamScore ?? 0))
+                        }
+                        Spacer()
+                        Text("VS")
+                        Spacer()
+                        VStack {
+                            Text(game.awayTeamName)
+                            Text(String(game.awayTeamScore ?? 0))
+                        }
+                        Spacer()
+                    }
+                }
+                .frame(height: 44)
+                .cornerRadius(10)
+                .shadow(radius: 10)
+                
+                
+            }
         }
         .padding()
+        
+        .task {
+            await gameViewModel.getGamesForDate(date: Date.now.addingTimeInterval(-86400*2))
+        }
     }
 }
 
