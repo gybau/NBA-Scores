@@ -7,16 +7,14 @@
 
 import Foundation
 
-struct Response: Decodable {
-    var games: [Game]
-}
+
 
 struct Game: Identifiable, Decodable {
     
     var id: Int
     var date: String
-    var awayTeamName: String
-    var homeTeamName: String
+    var awayTeamKey: String
+    var homeTeamKey: String
     var awayTeamId: Int
     var homeTeamId: Int
     var awayTeamScore: Int?
@@ -26,8 +24,8 @@ struct Game: Identifiable, Decodable {
         
         case id = "GameID"
         case date = "DateTime"
-        case awayTeamName = "AwayTeam"
-        case homeTeamName = "HomeTeam"
+        case awayTeamKey = "AwayTeam"
+        case homeTeamKey = "HomeTeam"
         case awayTeamId = "AwayTeamID"
         case homeTeamId = "HomeTeamID"
         case awayTeamScore = "AwayTeamScore"
@@ -37,8 +35,8 @@ struct Game: Identifiable, Decodable {
     init() {
         self.id = 18506
         self.date = "2022-12-03T12:30:00"
-        self.awayTeamName = "DAL"
-        self.homeTeamName = "NY"
+        self.awayTeamKey = "DAL"
+        self.homeTeamKey = "NY"
         self.awayTeamId = 25
         self.homeTeamId = 6
         self.awayTeamScore = 67
@@ -51,8 +49,8 @@ struct Game: Identifiable, Decodable {
         
         self.id = try container.decode(Int.self, forKey: .id)
         self.date = try container.decode(String.self, forKey: .date)
-        self.awayTeamName = try container.decode(String.self, forKey: .awayTeamName)
-        self.homeTeamName = try container.decode(String.self, forKey: .homeTeamName)
+        self.awayTeamKey = try container.decode(String.self, forKey: .awayTeamKey)
+        self.homeTeamKey = try container.decode(String.self, forKey: .homeTeamKey)
         self.awayTeamId = try container.decode(Int.self, forKey: .awayTeamId)
         self.homeTeamId = try container.decode(Int.self, forKey: .homeTeamId)
         self.awayTeamScore = try container.decode(Int?.self, forKey: .awayTeamScore)

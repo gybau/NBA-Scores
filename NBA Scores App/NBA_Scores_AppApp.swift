@@ -13,7 +13,7 @@ struct NBA_Scores_AppApp: App {
         
         
         WindowGroup {
-            ContentView().environmentObject(GameViewModel())
+            TabView().environmentObject(GameViewModel())
         }
     }
 }
