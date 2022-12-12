@@ -30,9 +30,9 @@ class GameViewModel: ObservableObject {
     func animateCards(day: days) {
         
         
-            self.yesterdayGames.removeAll()
-            self.todayGames.removeAll()
-            self.tomorrowGames.removeAll()
+        self.yesterdayGames.removeAll()
+        self.todayGames.removeAll()
+        self.tomorrowGames.removeAll()
         
         
         var now = DispatchTime.now()
@@ -73,10 +73,11 @@ class GameViewModel: ObservableObject {
         let year = components.year ?? 2000
         
         
-        
-        print("Day \(day)")
-        print("Month \(month)")
-        print("Year \(year)")
+        /*
+         print("Day \(day)")
+         print("Month \(month)")
+         print("Year \(year)")
+         */
         
         // Create URL
         guard let url = URL(string: "\(Constants.GAMES_BY_DATE_ENDPOINT)\(year)-\(month)-\(day)?key=\(Constants.API_KEY)") else {
@@ -106,24 +107,22 @@ class GameViewModel: ObservableObject {
                 let decoder = JSONDecoder()
                 let result = try decoder.decode([Game].self, from: data)
                 
-                
-                
-                for r in result {
-                    DispatchQueue.main.async {
-                        if Calendar.current.isDateInToday(date) {
-                            self.todayGamesPrivate.append(r)
-                        }
-                        else if Calendar.current.isDateInYesterday(date) {
-                            self.yesterdayGamesPrivate.append(r)
-                        }
-                        else if Calendar.current.isDateInTomorrow(date) {
-                            self.tomorrowGamesPrivate.append(r)
-                        }
-                        else {
-                            print("Date isn't yesterday, today or tomorrow")
-                        }
+                DispatchQueue.main.async {
+                    if Calendar.current.isDateInToday(date) {
+                        self.todayGamesPrivate = result
+                        self.animateCards(day: .today)
+                    }
+                    else if Calendar.current.isDateInYesterday(date) {
+                        self.yesterdayGamesPrivate = result
+                    }
+                    else if Calendar.current.isDateInTomorrow(date) {
+                        self.tomorrowGamesPrivate = result
+                    }
+                    else {
+                        print("Date isn't yesterday, today or tomorrow")
                     }
                 }
+                
             }
             catch {
                 print("Failed to decode GamesByDate JSON: \(error)")
@@ -159,7 +158,7 @@ class GameViewModel: ObservableObject {
                 let result = try decoder.decode([Team].self, from: data)
                 
                 DispatchQueue.main.async {
-                        self.teams = result
+                    self.teams = result
                 }
             }
             catch {
@@ -194,33 +193,33 @@ class GameViewModel: ObservableObject {
     
     
     /*
-    func getLogo(url: String?, completionHandler: @escaping (UIImage?) -> Void) {
-        
-        guard let url = url else {
-            print("Logo url was nil")
-            
-            return
-        }
-        
-        guard let url = URL(string: url) else {
-            print("Invalid Logo URL")
-            
-            return
-        }
-        
-        let session = URLSession.shared
-        
-        let dataTask = session.dataTask(with: url) { data, response, error in
-            
-            guard error == nil else {
-                print("Problem with getting Data from URL: \(error!.localizedDescription)")
-                return
-            }
-            let uiImage = UIImage(data: data ?? Data())
-            completionHandler(uiImage)
-        }
-        dataTask.resume()
-    }
+     func getLogo(url: String?, completionHandler: @escaping (UIImage?) -> Void) {
+     
+     guard let url = url else {
+     print("Logo url was nil")
+     
+     return
+     }
+     
+     guard let url = URL(string: url) else {
+     print("Invalid Logo URL")
+     
+     return
+     }
+     
+     let session = URLSession.shared
+     
+     let dataTask = session.dataTask(with: url) { data, response, error in
+     
+     guard error == nil else {
+     print("Problem with getting Data from URL: \(error!.localizedDescription)")
+     return
+     }
+     let uiImage = UIImage(data: data ?? Data())
+     completionHandler(uiImage)
+     }
+     dataTask.resume()
+     }
      */
     
     

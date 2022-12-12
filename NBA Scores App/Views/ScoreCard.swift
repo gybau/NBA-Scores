@@ -38,7 +38,7 @@ struct ScoreCard: View {
                         .frame(width: 70)
                         Spacer()
                         Text(String(game.homeTeamScore ?? 0))
-                            .font(.title)
+                            .font(.title3)
                             .bold()
                         Spacer()
                     }
@@ -51,7 +51,7 @@ struct ScoreCard: View {
                     HStack {
                         Spacer()
                         Text(String(game.awayTeamScore ?? 0))
-                            .font(.title)
+                            .font(.title3)
                             .bold()
                         Spacer()
                         VStack {

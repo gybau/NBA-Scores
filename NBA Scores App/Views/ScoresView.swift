@@ -42,9 +42,6 @@ struct ScoresView: View {
                 }
                 .pickerStyle(SegmentedPickerStyle())
                 .padding()
-                .onAppear {
-                    gameViewModel.animateCards(day: .today)
-                }
                 .onChange(of: selectedDay) { newValue in
                     gameViewModel.animateCards(day: newValue)
                 }
