@@ -10,10 +10,59 @@ import SwiftUI
 
 class GameViewModel: ObservableObject {
     
-    @Published var games = [Game]()
+    enum days {
+        case yesterday
+        case today
+        case tomorrow
+    }
+    
+    @Published var yesterdayGames = [Game]()
+    @Published var todayGames = [Game]()
+    @Published var tomorrowGames = [Game]()
+    
+    
     @Published var teams = [Team]()
     
+    private var yesterdayGamesPrivate = [Game]()
+    private var todayGamesPrivate = [Game]()
+    private var tomorrowGamesPrivate = [Game]()
     
+    func animateCards(day: days) {
+        
+        
+            self.yesterdayGames.removeAll()
+            self.todayGames.removeAll()
+            self.tomorrowGames.removeAll()
+        
+        
+        var now = DispatchTime.now()
+        
+        switch day {
+        case .yesterday:
+            for game in yesterdayGamesPrivate {
+                DispatchQueue.main.asyncAfter(deadline: now) {
+                    self.yesterdayGames.append(game)
+                }
+                now = now + 0.2
+            }
+        case .today:
+            for game in todayGamesPrivate {
+                DispatchQueue.main.asyncAfter(deadline: now) {
+                    self.todayGames.append(game)
+                }
+                now = now + 0.2
+            }
+            
+        case .tomorrow:
+            for game in tomorrowGamesPrivate {
+                DispatchQueue.main.asyncAfter(deadline: now) {
+                    self.tomorrowGames.append(game)
+                }
+                now = now + 0.2
+            }
+        }
+        
+    }
     // MARK: API Calls
     func getGamesForDate(date: Date) async {
         
@@ -22,6 +71,8 @@ class GameViewModel: ObservableObject {
         let day = components.day ?? 0
         let month = components.month ?? 0
         let year = components.year ?? 2000
+        
+        
         
         print("Day \(day)")
         print("Month \(month)")
@@ -54,15 +105,25 @@ class GameViewModel: ObservableObject {
             do {
                 let decoder = JSONDecoder()
                 let result = try decoder.decode([Game].self, from: data)
-                var now = DispatchTime.now()
-                for r in result {
-                    
-                    DispatchQueue.main.asyncAfter(deadline: now) {
-                        self.games.append(r)
-                    }
-                    now = now + 0.2
-                }
                 
+                
+                
+                for r in result {
+                    DispatchQueue.main.async {
+                        if Calendar.current.isDateInToday(date) {
+                            self.todayGamesPrivate.append(r)
+                        }
+                        else if Calendar.current.isDateInYesterday(date) {
+                            self.yesterdayGamesPrivate.append(r)
+                        }
+                        else if Calendar.current.isDateInTomorrow(date) {
+                            self.tomorrowGamesPrivate.append(r)
+                        }
+                        else {
+                            print("Date isn't yesterday, today or tomorrow")
+                        }
+                    }
+                }
             }
             catch {
                 print("Failed to decode GamesByDate JSON: \(error)")

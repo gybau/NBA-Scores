@@ -11,13 +11,9 @@ struct ScoresView: View {
     
     @EnvironmentObject var gameViewModel: GameViewModel
     
-    enum days {
-        case yesterday
-        case today
-        case tomorrow
-    }
     
-    @State var selectedDay: days = .today
+    
+    @State var selectedDay: GameViewModel.days = .today
     
     init() {
         UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(named: "NBA_Red")
@@ -33,35 +29,85 @@ struct ScoresView: View {
         ZStack {
             LinearGradient(colors: [Color("NBA_Blue"), Color("NBA_Red")], startPoint: .bottomLeading, endPoint: .topTrailing)
                 .ignoresSafeArea()
-            
-            ScrollView {
+            VStack{
                 Picker(selection: $selectedDay) {
                     Text("Yesterday")
-                        .tag(days.yesterday)
+                        .tag(GameViewModel.days.yesterday)
                     Text("Today")
-                        .tag(days.today)
+                        .tag(GameViewModel.days.today)
                     Text("Tomorrow")
-                        .tag(days.tomorrow)
+                        .tag(GameViewModel.days.tomorrow)
                 } label: {
                     
                 }
                 .pickerStyle(SegmentedPickerStyle())
-                .padding(.horizontal)
-                LazyVStack {
-                    ForEach(gameViewModel.games) { game in
-                        ScoreCard(game: game, awayTeam: gameViewModel.getAwayTeam(game: game) ?? Team(), homeTeam: gameViewModel.getHomeTeam(game: game) ?? Team())
-                            .padding(.bottom, 5)
-                    }
+                .padding()
+                .onAppear {
+                    gameViewModel.animateCards(day: .today)
+                }
+                .onChange(of: selectedDay) { newValue in
+                    gameViewModel.animateCards(day: newValue)
                 }
                 
-                .task {
-                    await gameViewModel.getGamesForDate(date: Date.now.addingTimeInterval(-86400*2))
-                    await gameViewModel.getTeams()
+                Divider()
+                    .overlay(.white)
+                
+                HStack {
+                    Text("Home")
+                    Spacer()
+                    Text("Away")
                 }
-                .animation(.easeInOut(duration: 0.5), value: gameViewModel.games.count)
-                .padding()
+                .font(.caption)
+                .padding(.horizontal, 60)
+                .foregroundColor(.white)
+                
+                
+                ScrollView {
+                    
+                    switch selectedDay {
+                        
+                    case .yesterday:
+                        LazyVStack {
+                            ForEach(gameViewModel.yesterdayGames) { game in
+                                ScoreCard(game: game, awayTeam: gameViewModel.getAwayTeam(game: game) ?? Team(), homeTeam: gameViewModel.getHomeTeam(game: game) ?? Team())
+                                    .padding(.bottom, 5)
+                            }
+                        }
+                        .animation(.easeIn(duration: 0.2), value: gameViewModel.yesterdayGames.count)
+                        .padding([.bottom, .horizontal])
+                        
+                    case .today:
+                        LazyVStack {
+                            ForEach(gameViewModel.todayGames) { game in
+                                ScoreCard(game: game, awayTeam: gameViewModel.getAwayTeam(game: game) ?? Team(), homeTeam: gameViewModel.getHomeTeam(game: game) ?? Team())
+                                    .padding(.bottom, 5)
+                            }
+                        }
+                        .animation(.easeIn(duration: 0.2), value: gameViewModel.todayGames.count)
+                        .padding([.bottom, .horizontal])
+                        
+                    case .tomorrow:
+                        
+                        LazyVStack {
+                            ForEach(gameViewModel.tomorrowGames) { game in
+                                ScoreCard(game: game, awayTeam: gameViewModel.getAwayTeam(game: game) ?? Team(), homeTeam: gameViewModel.getHomeTeam(game: game) ?? Team())
+                                    .padding(.bottom, 5)
+                            }
+                        }
+                        .animation(.easeIn(duration: 0.2), value: gameViewModel.tomorrowGames.count)
+                        .padding([.bottom, .horizontal])
+                        
+                    }
+                    
+                }
             }
             
+        }
+        .task {
+            await gameViewModel.getGamesForDate(date: Date().dayBefore)
+            await gameViewModel.getGamesForDate(date: Date())
+            await gameViewModel.getGamesForDate(date: Date().dayAfter)
+            await gameViewModel.getTeams()
         }
     }
 }

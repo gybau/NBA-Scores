@@ -21,6 +21,7 @@ struct ScoreCard: View {
             VStack {
                 Text(gameViewModel.formatDateToTime(date: game.date) ?? "No date available")
                     .font(.headline)
+                    
                 HStack {
                     Spacer()
                     HStack {
@@ -31,17 +32,14 @@ struct ScoreCard: View {
                                 .scaledToFit()
                                 .frame(height: 70)
                             Text(homeTeam.key)
-                                .font(.title)
-                                .bold()
-                                .shadow(radius: 2, x: 2, y: 2)
+                                .font(.title3)
+                                
                         }
                         .frame(width: 70)
                         Spacer()
-                        
                         Text(String(game.homeTeamScore ?? 0))
-                            .font(.largeTitle)
+                            .font(.title)
                             .bold()
-                            .shadow(radius: 2, x: 2, y: 2)
                         Spacer()
                     }
                     Spacer()
@@ -53,9 +51,8 @@ struct ScoreCard: View {
                     HStack {
                         Spacer()
                         Text(String(game.awayTeamScore ?? 0))
-                            .font(.largeTitle)
+                            .font(.title)
                             .bold()
-                            .shadow(radius: 2, x: 2, y: 2)
                         Spacer()
                         VStack {
                             Image("\(awayTeam.key)")
@@ -63,22 +60,17 @@ struct ScoreCard: View {
                                 .scaledToFit()
                                 .frame(height: 70)
                             Text(awayTeam.key)
-                                .font(.title)
-                                .bold()
-                                .shadow(radius: 2, x: 2, y: 2)
-                            
+                                .font(.title3)
+                                
                         }
                         .frame(width: 70)
                         Spacer()
-                        
                     }
                     Spacer()
                 }
-                .padding(.vertical, 10)
             }
-            
         }
-        .frame(height: 200)
+        .frame(height: 160)
         .cornerRadius(10)
         .shadow(radius: 3, x: 3, y: 3)
     }
