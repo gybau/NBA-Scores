@@ -10,10 +10,8 @@ import SwiftUI
 @main
 struct NBA_Scores_AppApp: App {
     var body: some Scene {
-        
-        
         WindowGroup {
-            TabView().environmentObject(GameViewModel())
+            ContentView().environmentObject(GameViewModel())
         }
     }
 }

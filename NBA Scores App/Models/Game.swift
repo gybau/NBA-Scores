@@ -9,7 +9,7 @@ import Foundation
 
 
 
-struct Game: Identifiable, Decodable {
+struct Game: Identifiable, Decodable, Equatable {
     
     var id: Int
     var date: String

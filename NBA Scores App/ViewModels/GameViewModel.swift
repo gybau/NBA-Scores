@@ -54,9 +54,15 @@ class GameViewModel: ObservableObject {
             do {
                 let decoder = JSONDecoder()
                 let result = try decoder.decode([Game].self, from: data)
-                DispatchQueue.main.async {
-                    self.games = result
+                var now = DispatchTime.now()
+                for r in result {
+                    
+                    DispatchQueue.main.asyncAfter(deadline: now) {
+                        self.games.append(r)
+                    }
+                    now = now + 0.2
                 }
+                
             }
             catch {
                 print("Failed to decode GamesByDate JSON: \(error)")
@@ -90,8 +96,9 @@ class GameViewModel: ObservableObject {
             do {
                 let decoder = JSONDecoder()
                 let result = try decoder.decode([Team].self, from: data)
+                
                 DispatchQueue.main.async {
-                    self.teams = result
+                        self.teams = result
                 }
             }
             catch {
@@ -112,6 +119,19 @@ class GameViewModel: ObservableObject {
         
         return self.teams.first(where: {$0.id == id})
     }
+    
+    func formatDateToTime(date: String) -> String? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        guard let newDate = dateFormatter.date(from: date) else {
+            print("Couldn't create date from string")
+            return nil
+        }
+        dateFormatter.dateFormat = "h:mm a"
+        return dateFormatter.string(from: newDate)
+    }
+    
+    
     /*
     func getLogo(url: String?, completionHandler: @escaping (UIImage?) -> Void) {
         
