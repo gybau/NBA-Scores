@@ -11,7 +11,9 @@ import SwiftUI
 struct NBA_Scores_AppApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView().environmentObject(GameViewModel())
+            ContentView()
+                .environmentObject(GameViewModel())
+                .environmentObject(StandingsViewModel())
         }
     }
 }

@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     
     @EnvironmentObject var gameViewModel: GameViewModel
+    @EnvironmentObject var standingsViewModel: StandingsViewModel
     
     let tabs: [Tab] = [
         Tab(type: .Standings, string: "Standings", symbol: "list.dash"),
@@ -27,8 +28,7 @@ struct ContentView: View {
                 case .Scores:
                     ScoresView()
                 case .Standings:
-                    Text("Standings View")
-                    Spacer()
+                    StandingsView()
                 case .Settings:
                     Text("Settings View")
                     Spacer()
@@ -38,7 +38,7 @@ struct ContentView: View {
                         path.move(to: CGPoint(x: 0, y: 0))
                         path.addLine(to: CGPoint(x: geo.size.width, y: 0))
                     }
-                    .stroke(Color.black, style: StrokeStyle(lineWidth: 1))
+                    .stroke(Color("NBA_Red"), style: StrokeStyle(lineWidth: 3))
                     
                     HStack {
                         Spacer()

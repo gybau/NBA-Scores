@@ -21,7 +21,6 @@ struct ScoresView: View {
         UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(named: "NBA_Red")
         UISegmentedControl.appearance().backgroundColor = .white
         UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
-        
     }
     
     var body: some View {

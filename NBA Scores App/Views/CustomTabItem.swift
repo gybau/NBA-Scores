@@ -19,7 +19,7 @@ struct CustomTabItem: View {
             Text(tab.string)
                 .font(.caption)
         }
-        .foregroundColor(selectedTab == tab.type ? .blue : .gray)
+        .foregroundColor(selectedTab == tab.type ? Color("NBA_Red") : .gray)
         .frame(height: 50)
         .onTapGesture {
             self.selectedTab = tab.type
