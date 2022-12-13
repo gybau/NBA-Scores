@@ -20,7 +20,6 @@ class GameViewModel: ObservableObject {
     @Published var todayGames = [Game]()
     @Published var tomorrowGames = [Game]()
     
-    
     @Published var teams = [Team]()
     
     private var yesterdayGamesPrivate = [Game]()
@@ -29,11 +28,9 @@ class GameViewModel: ObservableObject {
     
     func animateCards(day: days) {
         
-        
         self.yesterdayGames.removeAll()
         self.todayGames.removeAll()
         self.tomorrowGames.removeAll()
-        
         
         var now = DispatchTime.now()
         
@@ -43,14 +40,14 @@ class GameViewModel: ObservableObject {
                 DispatchQueue.main.asyncAfter(deadline: now) {
                     self.yesterdayGames.append(game)
                 }
-                now = now + 0.2
+                now = now + 0.02
             }
         case .today:
             for game in todayGamesPrivate {
                 DispatchQueue.main.asyncAfter(deadline: now) {
                     self.todayGames.append(game)
                 }
-                now = now + 0.2
+                now = now + 0.02
             }
             
         case .tomorrow:
@@ -58,7 +55,7 @@ class GameViewModel: ObservableObject {
                 DispatchQueue.main.asyncAfter(deadline: now) {
                     self.tomorrowGames.append(game)
                 }
-                now = now + 0.2
+                now = now + 0.02
             }
         }
         
@@ -66,7 +63,9 @@ class GameViewModel: ObservableObject {
     // MARK: API Calls
     func getGamesForDate(date: Date) async {
         
-        let components = Calendar.current.dateComponents([.day, .month, .year], from: date)
+        guard let ESTDate = Calendar.current.date(byAdding: .hour, value: -6, to: date) else {return}
+        
+        let components = Calendar.current.dateComponents([.day, .month, .year], from: ESTDate)
         
         let day = components.day ?? 0
         let month = components.month ?? 0
@@ -183,12 +182,19 @@ class GameViewModel: ObservableObject {
     func formatDateToTime(date: String) -> String? {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        
         guard let newDate = dateFormatter.date(from: date) else {
             print("Couldn't create date from string")
             return nil
         }
+        
+        guard let utc1Date = Calendar.current.date(byAdding: .hour, value: 1, to: newDate) else {
+            print("Couldn't create UTC+1 date")
+            return nil
+        }
+        
         dateFormatter.dateFormat = "h:mm a"
-        return dateFormatter.string(from: newDate)
+        return dateFormatter.string(from: utc1Date)
     }
     
     

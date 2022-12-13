@@ -23,7 +23,7 @@ struct Game: Identifiable, Decodable, Equatable {
     enum CodingKeys: String, CodingKey {
         
         case id = "GameID"
-        case date = "DateTime"
+        case date = "DateTimeUTC"
         case awayTeamKey = "AwayTeam"
         case homeTeamKey = "HomeTeam"
         case awayTeamId = "AwayTeamID"

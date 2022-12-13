@@ -15,6 +15,8 @@ struct ScoresView: View {
     
     @State var selectedDay: GameViewModel.days = .today
     
+    
+    
     init() {
         UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(named: "NBA_Red")
         UISegmentedControl.appearance().backgroundColor = .white
@@ -58,12 +60,12 @@ struct ScoresView: View {
                 .padding(.horizontal, 60)
                 .foregroundColor(.white)
                 
-                
                 ScrollView {
                     
                     switch selectedDay {
                         
                     case .yesterday:
+                        
                         LazyVStack {
                             ForEach(gameViewModel.yesterdayGames) { game in
                                 ScoreCard(game: game, awayTeam: gameViewModel.getAwayTeam(game: game) ?? Team(), homeTeam: gameViewModel.getHomeTeam(game: game) ?? Team())
@@ -74,6 +76,7 @@ struct ScoresView: View {
                         .padding([.bottom, .horizontal])
                         
                     case .today:
+                        
                         LazyVStack {
                             ForEach(gameViewModel.todayGames) { game in
                                 ScoreCard(game: game, awayTeam: gameViewModel.getAwayTeam(game: game) ?? Team(), homeTeam: gameViewModel.getHomeTeam(game: game) ?? Team())
@@ -93,12 +96,14 @@ struct ScoresView: View {
                         }
                         .animation(.easeIn(duration: 0.2), value: gameViewModel.tomorrowGames.count)
                         .padding([.bottom, .horizontal])
-                        
                     }
-                    
                 }
             }
-            
+        }
+        .onDisappear {
+            gameViewModel.todayGames.removeAll()
+            gameViewModel.yesterdayGames.removeAll()
+            gameViewModel.tomorrowGames.removeAll()
         }
         .task {
             await gameViewModel.getGamesForDate(date: Date().dayBefore)

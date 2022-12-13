@@ -11,15 +11,49 @@ struct ContentView: View {
     
     @EnvironmentObject var gameViewModel: GameViewModel
     
+    let tabs: [Tab] = [
+        Tab(type: .Standings, string: "Standings", symbol: "list.dash"),
+        Tab(type: .Scores, string: "Scores", symbol: "sportscourt"),
+        Tab(type: .Settings, string: "Settings", symbol: "gear")
+    ]
+    
+    @State var selectedTab = Tab.TabType.Scores
+    
     var body: some View {
-        TabView {
-            ScoresView()
-                .tabItem {
-                    VStack {
-                        Image(systemName: "sportscourt")
-                        Text("Scores")
-                    }
+        GeometryReader { geo in
+            VStack(spacing: 0) {
+                
+                switch selectedTab {
+                case .Scores:
+                    ScoresView()
+                case .Standings:
+                    Text("Standings View")
+                    Spacer()
+                case .Settings:
+                    Text("Settings View")
+                    Spacer()
                 }
+                VStack {
+                    Path { path in
+                        path.move(to: CGPoint(x: 0, y: 0))
+                        path.addLine(to: CGPoint(x: geo.size.width, y: 0))
+                    }
+                    .stroke(Color.black, style: StrokeStyle(lineWidth: 1))
+                    
+                    HStack {
+                        Spacer()
+                        ForEach(tabs) { tab in
+                            CustomTabItem(selectedTab: $selectedTab, tab: tab)
+                                .frame(width: (geo.size.width - 40)/3)
+                            
+                        }
+                        Spacer()
+                    }
+                    
+                }
+                .frame(height: 60)
+                
+            }
         }
     }
 }
