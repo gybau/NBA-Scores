@@ -26,7 +26,7 @@ struct ScoreCard: View {
                 Text(gameViewModel.formatDateToTime(date: game.date) ?? "No date available")
                     .font(.headline)
                 HStack {
-                    Spacer()
+                    
                     HStack {
                         Spacer()
                         VStack {
@@ -44,12 +44,12 @@ struct ScoreCard: View {
                             .bold()
                         Spacer()
                     }
-                    Spacer()
+                    
                     Text("-")
                         .font(.title3)
                         .bold()
                         .foregroundColor(.gray)
-                    Spacer()
+                    
                     HStack {
                         Spacer()
                         Text(String(scoreFormat(score: game.awayTeamScore)))
@@ -68,7 +68,7 @@ struct ScoreCard: View {
                         .frame(width: 70)
                         Spacer()
                     }
-                    Spacer()
+                    
                 }
             }
         }

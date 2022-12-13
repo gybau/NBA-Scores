@@ -45,28 +45,23 @@ struct StandingsView: View {
                     GridItem(.fixed(20)),
                     GridItem(.fixed(40)),
                     GridItem(.fixed(150)),
-                    GridItem(.fixed(30)),
-                    GridItem(.fixed(30)),
-                    GridItem(.fixed(50))], alignment: .leading, spacing: 5) {
+                    GridItem(.fixed(25)),
+                    GridItem(.fixed(25)),
+                    GridItem(.fixed(40))], alignment: .leading) {
                         Text("#")
                             .bold()
-                        
                         Text("")
                         Text("Team")
                         Text("W")
                         Text("L")
                         Text("%")
                     }
-                .font(.caption)
-                .foregroundColor(.white)
-                .padding(.vertical, 5)
-                .padding(.horizontal)
-                
-                
-
+                    .font(.caption)
+                    .foregroundColor(.white)
+                    .padding(.vertical, 5)
+                    .padding(.horizontal)
                 ScrollView {
-                    
-                    LazyVStack {
+                    VStack(alignment: .leading) {
                         switch selectedConference {
                             
                         case .Eastern:
@@ -90,7 +85,6 @@ struct StandingsView: View {
                                 }
                             }
                         }
-                        
                     }
                 }
             }

@@ -26,7 +26,7 @@ struct ScoresView: View {
     var body: some View {
         
         
-
+        
         ZStack {
             LinearGradient(colors: [Color("NBA_Blue"), Color("NBA_Red")], startPoint: .bottomLeading, endPoint: .topTrailing)
                 .ignoresSafeArea()
@@ -51,16 +51,34 @@ struct ScoresView: View {
                 Divider()
                     .overlay(.white)
                 HStack {
+                    Group {
+                        Spacer()
+                        Spacer()
+                    }
                     Text("Home")
+                    Group {
+                        Spacer()
+                        Spacer()
+                        Spacer()
+                    }
                     Spacer()
+                    Group {
+                        Spacer()
+                        Spacer()
+                        Spacer()
+                    }
                     Text("Away")
+                    Group {
+                        Spacer()
+                        Spacer()
+                    }
                 }
                 .font(.caption)
-                .padding(.horizontal, 60)
+                //.padding(.horizontal)
                 .padding(.vertical, 5)
                 .foregroundColor(.white)
                 
-                    
+                
                 ScrollView {
                     
                     switch selectedDay {

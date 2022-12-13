@@ -19,24 +19,24 @@ struct StandingRow: View {
             Rectangle()
                 .foregroundColor(isPreview ? .black : .white.opacity(0))
             
-                HStack(alignment: .center) {
+                HStack {
                     LazyVGrid(columns: [
                         GridItem(.fixed(20)),
                         GridItem(.fixed(40)),
                         GridItem(.fixed(150)),
-                        GridItem(.fixed(30)),
-                        GridItem(.fixed(30)),
-                        GridItem(.fixed(50))], alignment: .leading, spacing: 5) {
+                        GridItem(.fixed(25)),
+                        GridItem(.fixed(25)),
+                        GridItem(.fixed(40))], alignment: .leading) {
                             Text("\(index + 1)")
                                 .bold()
-                            
                             Image("\(standing.key)")
                                 .resizable()
                                 .scaledToFit()
                             Text("\(standing.city ?? "") \(standing.name ?? "")")
                             Text(String(standing.wins ?? 0))
                             Text(String(standing.losses ?? 0))
-                            Text(String(standing.winPercentage ?? 0))
+                            Text(String(format: "%.2f", standing.winPercentage ?? 0))
+                            
                         }
                 }
                 .foregroundColor(.white)
