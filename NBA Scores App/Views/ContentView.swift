@@ -60,6 +60,11 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
+        let standingsViewModel = StandingsViewModel()
         ContentView().environmentObject(GameViewModel())
+            .environmentObject(standingsViewModel)
+            .task {
+                await standingsViewModel.getStandingsForSeason2022()
+            }
     }
 }

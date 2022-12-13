@@ -64,6 +64,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6D01813929492AB00048E406 /* StandingsView */ = {
+			isa = PBXGroup;
+			children = (
+				6D3C851A2948CC0900474A90 /* StandingsView.swift */,
+				6D3C851F2948D5BB00474A90 /* StandingRow.swift */,
+			);
+			path = StandingsView;
+			sourceTree = "<group>";
+		};
 		6D10C2FE29468E9D003A59FA /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -90,8 +99,7 @@
 			children = (
 				6DB54455293CBE1A002177A1 /* ContentView.swift */,
 				6D75F7BF2947F7BB00B967FB /* CustomTabItem.swift */,
-				6D3C851A2948CC0900474A90 /* StandingsView.swift */,
-				6D3C851F2948D5BB00474A90 /* StandingRow.swift */,
+				6D01813929492AB00048E406 /* StandingsView */,
 				6D3C851E2948CD0500474A90 /* ScoresView */,
 			);
 			path = Views;

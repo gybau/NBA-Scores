@@ -30,7 +30,7 @@ struct ScoresView: View {
         ZStack {
             LinearGradient(colors: [Color("NBA_Blue"), Color("NBA_Red")], startPoint: .bottomLeading, endPoint: .topTrailing)
                 .ignoresSafeArea()
-            VStack{
+            VStack (spacing: 0){
                 Picker(selection: $selectedDay) {
                     Text("Yesterday")
                         .tag(GameViewModel.days.yesterday)
@@ -42,14 +42,14 @@ struct ScoresView: View {
                     
                 }
                 .pickerStyle(SegmentedPickerStyle())
-                .padding()
+                .padding(.horizontal)
+                .padding(.bottom)
                 .onChange(of: selectedDay) { newValue in
                     gameViewModel.animateCards(day: newValue)
                 }
                 
                 Divider()
                     .overlay(.white)
-                
                 HStack {
                     Text("Home")
                     Spacer()
@@ -57,8 +57,10 @@ struct ScoresView: View {
                 }
                 .font(.caption)
                 .padding(.horizontal, 60)
+                .padding(.vertical, 5)
                 .foregroundColor(.white)
                 
+                    
                 ScrollView {
                     
                     switch selectedDay {
