@@ -105,6 +105,7 @@ struct ScoresView: View {
             gameViewModel.tomorrowGames.removeAll()
         }
         .task {
+            
             await gameViewModel.getGamesForDate(date: Date().dayBefore)
             await gameViewModel.getGamesForDate(date: Date())
             await gameViewModel.getGamesForDate(date: Date().dayAfter)

@@ -9,7 +9,14 @@ import Foundation
 
 class StandingsViewModel: ObservableObject {
     
-    @Published var standings: [Standing] = [Standing]()
+    
+    @Published var standingsEastern: [Standing] = [Standing]()
+    @Published var standingsWestern: [Standing] = [Standing]()
+    
+    enum Conference: String {
+        case Eastern = "Eastern"
+        case Western = "Western"
+    }
     
     func getStandingsForSeason2022() async {
         
@@ -33,9 +40,30 @@ class StandingsViewModel: ObservableObject {
             do {
                 let decoder = JSONDecoder()
                 let result = try decoder.decode([Standing].self, from: data)
-                DispatchQueue.main.async {
-                    self.standings = result
+                
+                var easternUnsorted = [Standing]()
+                var westernUnsorted = [Standing]()
+                
+                for r in result {
+                    if r.conference == Conference.Eastern.rawValue {
+                        easternUnsorted.append(r)
+                    }
+                    else {
+                        westernUnsorted.append(r)
+                    }
                 }
+                let easternSorted = easternUnsorted.sorted {
+                    return $0.winPercentage ?? 0 > $1.winPercentage ?? 0
+                }
+                let westernSorted = westernUnsorted.sorted {
+                    return $0.winPercentage ?? 0 > $1.winPercentage ?? 0
+                }
+                DispatchQueue.main.async {
+                    self.standingsEastern = easternSorted
+                    self.standingsWestern = westernSorted
+                }
+                
+                
             }
             catch {
                 print(error.localizedDescription)

@@ -10,16 +10,19 @@ import SwiftUI
 struct StandingRow: View {
     
     var standing: Standing
+    var index: Int
     
     var body: some View {
         HStack {
-            Text(String(standing.conferenceRank ?? 0))
+            Text("\(index + 1)")
+            Text(standing.city ?? "")
+            Text(standing.name ?? "")
         }
     }
 }
 
 struct StandingRow_Previews: PreviewProvider {
     static var previews: some View {
-        StandingRow(standing: Standing())
+        StandingRow(standing: Standing(), index: 1)
     }
 }

@@ -18,7 +18,11 @@ struct ScoreCard: View {
     var body: some View {
         ZStack {
             Color.white
-            VStack(spacing: 5) {
+            RoundedRectangle(cornerRadius: 10).stroke( style: StrokeStyle(lineWidth: 3))
+            
+                
+                
+            VStack(spacing: 0) {
                 Text(gameViewModel.formatDateToTime(date: game.date) ?? "No date available")
                     .font(.headline)
                 HStack {
@@ -68,6 +72,7 @@ struct ScoreCard: View {
                 }
             }
         }
+        
         .frame(height: 150)
         .cornerRadius(10)
         .shadow(radius: 3, x: 3, y: 3)
