@@ -20,6 +20,8 @@ class GameViewModel: ObservableObject {
     @Published var todayGames = [Game]()
     @Published var tomorrowGames = [Game]()
     
+    @Published var favoriteTeam: Int? = nil
+    
     @Published var teams = [Team]()
     
     private var yesterdayGamesPrivate = [Game]()
@@ -27,6 +29,8 @@ class GameViewModel: ObservableObject {
     private var tomorrowGamesPrivate = [Game]()
     
     func animateCards(day: days) {
+        
+        self.moveFavoriteTeam()
         
         self.yesterdayGames.removeAll()
         self.todayGames.removeAll()
@@ -42,6 +46,7 @@ class GameViewModel: ObservableObject {
                 }
                 now = now + 0.02
             }
+            
         case .today:
             for game in todayGamesPrivate {
                 DispatchQueue.main.asyncAfter(deadline: now) {
@@ -50,6 +55,7 @@ class GameViewModel: ObservableObject {
                 now = now + 0.02
             }
             
+            
         case .tomorrow:
             for game in tomorrowGamesPrivate {
                 DispatchQueue.main.asyncAfter(deadline: now) {
@@ -57,7 +63,9 @@ class GameViewModel: ObservableObject {
                 }
                 now = now + 0.02
             }
+            
         }
+        
         
     }
     // MARK: API Calls
@@ -110,6 +118,7 @@ class GameViewModel: ObservableObject {
                     if Calendar.current.isDateInToday(date) {
                         self.todayGamesPrivate = result
                         self.animateCards(day: .today)
+                        
                     }
                     else if Calendar.current.isDateInYesterday(date) {
                         self.yesterdayGamesPrivate = result
@@ -120,6 +129,7 @@ class GameViewModel: ObservableObject {
                     else {
                         print("Date isn't yesterday, today or tomorrow")
                     }
+                    
                 }
                 
             }
@@ -158,6 +168,7 @@ class GameViewModel: ObservableObject {
                 
                 DispatchQueue.main.async {
                     self.teams = result
+                    
                 }
             }
             catch {
@@ -197,6 +208,22 @@ class GameViewModel: ObservableObject {
         return dateFormatter.string(from: utc1Date)
     }
     
+    func moveFavoriteTeam() {
+        guard favoriteTeam != nil else {
+            return
+        }
+        guard !yesterdayGamesPrivate.isEmpty, !todayGamesPrivate.isEmpty, !tomorrowGamesPrivate.isEmpty else {
+            return
+        }
+        let yesterdayMovedTeam = self.yesterdayGamesPrivate.remove(at: self.yesterdayGamesPrivate.firstIndex(where: {$0.homeTeamId == self.favoriteTeam || $0.awayTeamId == self.favoriteTeam}) ?? 0)
+        self.yesterdayGamesPrivate.insert(yesterdayMovedTeam, at: 0)
+        
+        let todayMovedTeam = self.todayGamesPrivate.remove(at: self.todayGamesPrivate.firstIndex(where: {$0.homeTeamId == self.favoriteTeam || $0.awayTeamId == self.favoriteTeam}) ?? 0)
+        self.todayGamesPrivate.insert(todayMovedTeam, at: 0)
+        
+        let tomorrowMovedTeam = self.tomorrowGamesPrivate.remove(at: self.tomorrowGamesPrivate.firstIndex(where: {$0.homeTeamId == self.favoriteTeam || $0.awayTeamId == self.favoriteTeam}) ?? 0)
+        self.tomorrowGamesPrivate.insert(tomorrowMovedTeam, at: 0)
+    }
     
     /*
      func getLogo(url: String?, completionHandler: @escaping (UIImage?) -> Void) {

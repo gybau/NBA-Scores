@@ -25,7 +25,23 @@ struct StandingsView: View {
             LinearGradient(colors: [Color("NBA_Blue"), Color("NBA_Red")], startPoint: .bottomLeading, endPoint: .topTrailing)
                 .ignoresSafeArea()
             
-            VStack(spacing: 0) {
+            VStack(alignment: .leading, spacing: 0) {
+                
+                HStack {
+                    Text("Standings")
+                        .foregroundColor(.white)
+                        .font(.largeTitle)
+                        .bold()
+                    Spacer()
+                    Image("nba")
+                        .resizable()
+                        .scaledToFit()
+                        
+                        
+                }
+                .frame(height: 70)
+                .padding(.bottom, 10)
+                    
                 
                 Picker(selection: $selectedConference) {
                     Text("Eastern")
@@ -36,11 +52,11 @@ struct StandingsView: View {
                     
                 }
                 .pickerStyle(SegmentedPickerStyle())
-                .padding(.horizontal)
                 .padding(.bottom)
                 
                 Divider()
                     .overlay(.white)
+                    .padding(.horizontal, -20)
                 LazyVGrid(columns: [
                     GridItem(.fixed(20)),
                     GridItem(.fixed(40)),
@@ -61,7 +77,7 @@ struct StandingsView: View {
                     .font(.caption)
                     .foregroundColor(.white)
                     .padding(.vertical, 5)
-                    .padding(.horizontal)
+                    
                 ScrollView {
                     VStack(alignment: .leading) {
                         switch selectedConference {
@@ -71,7 +87,7 @@ struct StandingsView: View {
                             ForEach(standingsViewModel.standingsEastern) { standing in
                                 if let index = standingsViewModel.standingsEastern.firstIndex(where: {$0.id == standing.id}) {
                                     StandingRow(standing: standing, index: index)
-                                        .padding(.horizontal)
+                                        
                                     Divider()
                                         .overlay(.white)
                                 }
@@ -81,7 +97,7 @@ struct StandingsView: View {
                             ForEach(standingsViewModel.standingsWestern) { standing in
                                 if let index = standingsViewModel.standingsWestern.firstIndex(where: {$0.id == standing.id}) {
                                     StandingRow(standing: standing, index: index)
-                                        .padding(.horizontal)
+                                        
                                     Divider()
                                         .overlay(.white)
                                 }
@@ -89,7 +105,9 @@ struct StandingsView: View {
                         }
                     }
                 }
+                .scrollIndicators(.hidden)
             }
+            .padding(.horizontal)
         }
     }
 }

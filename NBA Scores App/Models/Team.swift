@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Team: Decodable {
+struct Team: Decodable, Identifiable {
     
     var id: Int
     var key: String

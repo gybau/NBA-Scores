@@ -16,25 +16,34 @@ struct ScoreCard: View {
     var homeTeam: Team
     
     
+    
+    
     var body: some View {
         ZStack {
             Color.white
             RoundedRectangle(cornerRadius: 5).stroke( style: StrokeStyle(lineWidth: 3))
-            
-                
-                
             VStack(spacing: 0) {
                 Text(gameViewModel.formatDateToTime(date: game.date) ?? "No date available")
-                    .font(.headline)
+                    .font(.caption)
                 HStack {
                     
                     HStack {
                         Spacer()
                         VStack {
-                            Image("\(homeTeam.key)")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(height: 70)
+                            ZStack{
+                                
+                                Image("\(homeTeam.key)")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(height: 70)
+                                if homeTeam.id == gameViewModel.favoriteTeam {
+                                    Image(systemName: "star.fill")
+                                        .foregroundColor(.yellow)
+                                        .offset(x: 35, y: -35)
+                                }
+                                
+                            }
+                            
                             Text(homeTeam.name ?? "")
                                 .font(.footnote)
                                 
@@ -60,10 +69,18 @@ struct ScoreCard: View {
                             .bold()
                         Spacer()
                         VStack {
-                            Image("\(awayTeam.key)")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(height: 70)
+                            ZStack {
+                                Image("\(awayTeam.key)")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(height: 70)
+                                if awayTeam.id == gameViewModel.favoriteTeam {
+                                    Image(systemName: "star.fill")
+                                        .foregroundColor(.yellow)
+                                        .offset(x: 35, y: -35)
+                                }
+                            }
+                            
                             Text(awayTeam.name ?? "")
                                 .font(.footnote)
                                 

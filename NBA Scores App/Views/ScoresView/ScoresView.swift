@@ -21,6 +21,8 @@ struct ScoresView: View {
         UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(named: "NBA_Red")
         UISegmentedControl.appearance().backgroundColor = .white
         UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
+        
+        
     }
     
     var body: some View {
@@ -30,7 +32,23 @@ struct ScoresView: View {
         ZStack {
             LinearGradient(colors: [Color("NBA_Blue"), Color("NBA_Red")], startPoint: .bottomLeading, endPoint: .topTrailing)
                 .ignoresSafeArea()
-            VStack (spacing: 0){
+            VStack (alignment: .leading, spacing: 0){
+                
+                HStack {
+                    Text("Games")
+                        .foregroundColor(.white)
+                        .font(.largeTitle)
+                        .bold()
+                    Spacer()
+                    Image("nba")
+                        .resizable()
+                        .scaledToFit()
+                        
+                        
+                }
+                .frame(height: 70)
+                .padding(.bottom, 10)
+                
                 Picker(selection: $selectedDay) {
                     Text("Yesterday")
                         .tag(GameViewModel.days.yesterday)
@@ -42,7 +60,7 @@ struct ScoresView: View {
                     
                 }
                 .pickerStyle(SegmentedPickerStyle())
-                .padding(.horizontal)
+                
                 .padding(.bottom)
                 .onChange(of: selectedDay) { newValue in
                     gameViewModel.animateCards(day: newValue)
@@ -50,6 +68,7 @@ struct ScoresView: View {
                 
                 Divider()
                     .overlay(.white)
+                    .padding(.horizontal, -20)
                 HStack {
                     Group {
                         Spacer()
@@ -74,7 +93,7 @@ struct ScoresView: View {
                     }
                 }
                 .font(.caption)
-                //.padding(.horizontal)
+                .padding(.horizontal, -20)
                 .padding(.vertical, 5)
                 .foregroundColor(.white)
                 
@@ -87,12 +106,14 @@ struct ScoresView: View {
                         
                         LazyVStack {
                             ForEach(gameViewModel.yesterdayGames) { game in
-                                ScoreCard(game: game, awayTeam: gameViewModel.getAwayTeam(game: game) ?? Team(), homeTeam: gameViewModel.getHomeTeam(game: game) ?? Team())
-                                    .padding(.bottom, 5)
+                                    ScoreCard(game: game, awayTeam: gameViewModel.getAwayTeam(game: game) ?? Team(), homeTeam: gameViewModel.getHomeTeam(game: game) ?? Team())
+                                        .padding(.bottom, 5)
+                                        
+                                        
                             }
                         }
                         .animation(.easeIn(duration: 0.2), value: gameViewModel.yesterdayGames.count)
-                        .padding([.bottom, .horizontal])
+                        .padding(.bottom)
                         
                     case .today:
                         
@@ -102,8 +123,9 @@ struct ScoresView: View {
                                     .padding(.bottom, 5)
                             }
                         }
+                        
                         .animation(.easeIn(duration: 0.2), value: gameViewModel.todayGames.count)
-                        .padding([.bottom, .horizontal])
+                        .padding(.bottom)
                         
                     case .tomorrow:
                         
@@ -114,11 +136,14 @@ struct ScoresView: View {
                             }
                         }
                         .animation(.easeIn(duration: 0.2), value: gameViewModel.tomorrowGames.count)
-                        .padding([.bottom, .horizontal])
+                        .padding(.bottom)
                     }
                 }
+                .scrollIndicators(.hidden)
             }
+            .padding(.horizontal)
         }
+        
         .onDisappear {
             gameViewModel.todayGames.removeAll()
             gameViewModel.yesterdayGames.removeAll()
@@ -132,6 +157,7 @@ struct ScoresView: View {
             await gameViewModel.getTeams()
         }
     }
+    
 }
 
 struct ScoresView_Previews: PreviewProvider {

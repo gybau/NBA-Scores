@@ -30,8 +30,7 @@ struct ContentView: View {
                 case .Standings:
                     StandingsView()
                 case .Settings:
-                    Text("Settings View")
-                    Spacer()
+                    SettingsView()
                 }
                 VStack {
                     Path { path in
