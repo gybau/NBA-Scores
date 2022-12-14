@@ -23,10 +23,11 @@ struct StandingRow: View {
                     LazyVGrid(columns: [
                         GridItem(.fixed(20)),
                         GridItem(.fixed(40)),
-                        GridItem(.fixed(150)),
+                        GridItem(.flexible()),
                         GridItem(.fixed(25)),
                         GridItem(.fixed(25)),
-                        GridItem(.fixed(40))], alignment: .leading) {
+                        GridItem(.fixed(40)),
+                        GridItem(.fixed(30))], alignment: .leading) {
                             Text("\(index + 1)")
                                 .bold()
                             Image("\(standing.key)")
@@ -36,6 +37,7 @@ struct StandingRow: View {
                             Text(String(standing.wins ?? 0))
                             Text(String(standing.losses ?? 0))
                             Text(String(format: "%.2f", standing.winPercentage ?? 0))
+                            Text(standing.streak ?? "")
                             
                         }
                 }

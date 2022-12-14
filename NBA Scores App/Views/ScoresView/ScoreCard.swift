@@ -15,10 +15,11 @@ struct ScoreCard: View {
     var awayTeam: Team
     var homeTeam: Team
     
+    
     var body: some View {
         ZStack {
             Color.white
-            RoundedRectangle(cornerRadius: 10).stroke( style: StrokeStyle(lineWidth: 3))
+            RoundedRectangle(cornerRadius: 5).stroke( style: StrokeStyle(lineWidth: 3))
             
                 
                 
@@ -34,8 +35,10 @@ struct ScoreCard: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(height: 70)
-                            Text(homeTeam.key)
+                            Text(homeTeam.name ?? "")
                                 .font(.footnote)
+                                
+                            
                         }
                         .frame(width: 70)
                         Spacer()
@@ -61,7 +64,7 @@ struct ScoreCard: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(height: 70)
-                            Text(awayTeam.key)
+                            Text(awayTeam.name ?? "")
                                 .font(.footnote)
                                 
                         }
@@ -74,7 +77,7 @@ struct ScoreCard: View {
         }
         
         .frame(height: 150)
-        .cornerRadius(10)
+        .cornerRadius(5)
         .shadow(radius: 3, x: 3, y: 3)
     }
     

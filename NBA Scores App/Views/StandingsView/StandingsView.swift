@@ -44,10 +44,11 @@ struct StandingsView: View {
                 LazyVGrid(columns: [
                     GridItem(.fixed(20)),
                     GridItem(.fixed(40)),
-                    GridItem(.fixed(150)),
+                    GridItem(.flexible()),
                     GridItem(.fixed(25)),
                     GridItem(.fixed(25)),
-                    GridItem(.fixed(40))], alignment: .leading) {
+                    GridItem(.fixed(40)),
+                    GridItem(.fixed(30))], alignment: .leading) {
                         Text("#")
                             .bold()
                         Text("")
@@ -55,6 +56,7 @@ struct StandingsView: View {
                         Text("W")
                         Text("L")
                         Text("%")
+                        Text("STR")
                     }
                     .font(.caption)
                     .foregroundColor(.white)
